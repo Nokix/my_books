@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minimal To-Do List</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        ul { padding-left: 1.2em; }
+        li { margin-bottom: 0.5em; }
+        input[type="text"] { padding: 0.3em; }
+        button { padding: 0.3em 0.7em; }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input id="todo-input" type="text" placeholder="Add a new task">
+    <button onclick="addTodo()">Add</button>
+    <ul id="todo-list"></ul>
+
+    <script>
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+            if (text) {
+                const li = document.createElement('li');
+                li.textContent = text;
+                li.onclick = () => li.remove();
+                document.getElementById('todo-list').appendChild(li);
+                input.value = '';
+            }
+        }
+        document.getElementById('todo-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addTodo();
+        });
+    </script>
+</body>
+</html>
