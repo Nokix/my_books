@@ -1,7 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# CORS erlauben
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Für Entwicklung, später gezielt setzen!
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class TodoItem(BaseModel):
     id: int

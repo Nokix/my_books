@@ -14,24 +14,52 @@
 <body>
     <h1>To-Do List</h1>
     <input id="todo-input" type="text" placeholder="Add a new task">
-    <button onclick="addTodo()">Add</button>
+    <button onclick="addItem()">Add</button>
     <ul id="todo-list"></ul>
 
     <script>
-        function addTodo() {
-            const input = document.getElementById('todo-input');
-            const text = input.value.trim();
-            if (text) {
-                const li = document.createElement('li');
-                li.textContent = text;
-                li.onclick = () => li.remove();
-                document.getElementById('todo-list').appendChild(li);
-                input.value = '';
+        const API_URL = 'http://localhost:8000';
+
+        async function showItems() {
+            const ul = document.getElementById('todo-list');
+            ul.innerHTML = '';
+            try {
+                const res = await fetch(`${API_URL}/todos`);
+                const items = await res.json();
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.content;
+                    li.onclick = () => deleteItem(item.id);
+                    ul.appendChild(li);
+                });
+            } catch (e) {
+                ul.innerHTML = '<li>Fehler beim Laden</li>';
             }
         }
+
+        async function addItem() {
+            const input = document.getElementById('todo-input');
+            const text = input.value.trim();
+            if (!text) return;
+            await fetch(`${API_URL}/todos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: text })
+            });
+            input.value = '';
+            showItems();
+        }
+
+        async function deleteItem(id) {
+            await fetch(`${API_URL}/todos/${id}`, { method: 'DELETE' });
+            showItems();
+        }
+
         document.getElementById('todo-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addTodo();
+            if (e.key === 'Enter') addItem();
         });
+
+        showItems();
     </script>
 </body>
 </html>
