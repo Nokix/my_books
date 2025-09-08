@@ -1,3 +1,6 @@
+#you should normaly ignore this:
+# .env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -135,7 +138,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# .env
 .envrc
 .venv
 env/

@@ -29,7 +29,7 @@
                 items.forEach(item => {
                     const li = document.createElement('li');
                     li.textContent = item.content;
-                    li.onclick = () => deleteItem(item.id);
+                    li.onclick = () => deleteItem(item._id);
                     ul.appendChild(li);
                 });
             } catch (e) {
